@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+{% block body %}
+    <h1>{{ post.title }}</h1>
+    <div>
+        <p class="autores">{{ post.author }}</p>
+        <p class="contenido">{{ post.content | raw}}</p>
+
+    </div>
+
+    <h2>Comentarios</h2>
+    {% for comment in post.comment %}
+        <div>
+            <p class="autores">{{ comment.user.getUsername() }}</p>
+         <p class="contenido"> {{ comment.comment }}</p>{% if app.user ==  comment.user  %}<a class="user" href="users/">Editar</a>{% endif %}
+        </div>
+    {% endfor %}
+    {% if app.user is not null %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" class="btn btn-success" value="Escribir comentario">
+        {{ form_end(form) }}
+    {% endif %}
+
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=kymh019bj0tezetcjbg2iasy1htr6fnq7iq2znsdasuz5qyc"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>
+{%endblock%}
